@@ -1,8 +1,6 @@
 <?php
-if (@!include __DIR__ . '/../../vendor/autoload.php') {
-	echo 'Install Nette Tester using `composer update --dev`';
-	exit(1);
-}
+
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 // configure environment
 Tester\Environment::setup();
@@ -14,15 +12,26 @@ define('TEMP_DIR', __DIR__ . '/../tmp/' . (isset($_SERVER['argv']) ? md5(seriali
 Tester\Helpers::purge(TEMP_DIR);
 
 
-$_SERVER = array_intersect_key($_SERVER, array_flip(array(
-	'PHP_SELF', 'SCRIPT_NAME', 'SERVER_ADDR', 'SERVER_SOFTWARE', 'HTTP_HOST', 'DOCUMENT_ROOT', 'OS', 'argc', 'argv')));
+$_SERVER = array_intersect_key($_SERVER, array_flip([
+    'PHP_SELF',
+    'SCRIPT_NAME',
+    'SERVER_ADDR',
+    'SERVER_SOFTWARE',
+    'HTTP_HOST',
+    'DOCUMENT_ROOT',
+    'OS',
+    'argc',
+    'argv',
+]));
 $_SERVER['REQUEST_TIME'] = 1234567890;
-$_ENV = $_GET = $_POST = array();
+$_ENV = $_GET = $_POST = [];
 
-function id($val) {
-	return $val;
+function id($val)
+{
+    return $val;
 }
 
-function run(Tester\TestCase $testCase) {
-	$testCase->run(isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : NULL);
+function run(Tester\TestCase $testCase)
+{
+    $testCase->run(isset($_SERVER['argv'][1]) ? $_SERVER['argv'][1] : NULL);
 }
