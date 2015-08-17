@@ -1,0 +1,32 @@
+{
+    "name": "instante/doctrine",
+    "type": "library",
+    "description": "Improved wrapper of Kdyby\\Doctrine integration into Nette",
+    "keywords": [
+        "nette",
+        "instante"
+    ],
+    "license": [
+        "BSD-3-Clause",
+        "GPL-2.0",
+        "GPL-3.0"
+    ],
+    "require": {
+        "nette/di": "~2.2",
+        "nette/security": "~2.2",
+        "doctrine/common": "2.4.*",
+        "doctrine/dbal": "2.4.*",
+        "doctrine/orm": "2.4.*",
+        "doctrine/migrations": "@dev",
+        "kdyby/doctrine": "@dev"
+    },
+    "require-dev": {
+        "nette/tester": "@dev",
+        "jakub-onderka/php-parallel-lint": "~0.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "Instante\\Doctrine\\": "src/"
+        }
+    }
+}
