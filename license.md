@@ -5,11 +5,6 @@ Instante and this component are triple-licensed under New BSD license,
 GNU GPL 2 and GNU GPL 3. You may freely choose which license fits better
 for your use.
 
-Instante bootstrap 3 renderer is based on Kdyby bootstrap form renderer
-also triple-licensed with New BSD, GPL 2 and 3.
-You may find its original license in license.kdyby.md located in the same
-directory as this file.
-
 New BSD License
 ---------------
 
