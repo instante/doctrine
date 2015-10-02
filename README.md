@@ -1,6 +1,10 @@
 Instante Doctrine integration
 ======
 
+[![Build Status](https://travis-ci.org/instante/doctrine.svg?branch=master)](https://travis-ci.org/instante/doctrine)
+[![Downloads this Month](https://img.shields.io/packagist/dm/instante/doctrine.svg)](https://packagist.org/packages/instante/doctrine)
+[![Latest stable](https://img.shields.io/packagist/v/instante/doctrine.svg)](https://packagist.org/packages/instante/doctrine)
+
 Wrapper over Kdyby\Doctrine adding several improvements:
 
 - migrations
