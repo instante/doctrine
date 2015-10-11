@@ -356,6 +356,7 @@ class MockSessionFactory
 {
     static function create($data = NULL)
     {
+        session_save_path('.');
         $session = new Session(new MockSessionRequest, new MockSessionResponse);
         $session->setHandler(new MockSessionHandler($data));
         $session->setName('test-session-id');
