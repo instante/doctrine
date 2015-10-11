@@ -322,16 +322,23 @@ class MockSessionHandler implements SessionHandlerInterface
     }
 
 
-    public function close() {}
+    public function close() {
+        return TRUE;
+    }
 
     public function destroy($session_id)
     {
         $this->data = NULL;
+        return TRUE;
     }
 
-    public function gc($maxlifetime) {}
+    public function gc($maxlifetime) {
+        return TRUE;
+    }
 
-    public function open($save_path, $session_id) {}
+    public function open($save_path, $session_id) {
+        return TRUE;
+    }
 
     public function read($session_id)
     {
@@ -341,6 +348,7 @@ class MockSessionHandler implements SessionHandlerInterface
     public function write($session_id, $session_data)
     {
         $this->data = $session_data;
+        return TRUE;
     }
 }
 
