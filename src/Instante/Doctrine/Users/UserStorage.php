@@ -1,6 +1,10 @@
 <?php
 
 namespace Instante\Doctrine\Users;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Nette\Http\Session;
+use Nette\Security\Identity;
+use Nette\Security\IIdentity;
 
 /**
  *
@@ -8,30 +12,33 @@ namespace Instante\Doctrine\Users;
  */
 class UserStorage extends \Nette\Http\UserStorage
 {
-    /**@var \Kdyby\Doctrine\EntityDao */
-    private $userDao;
+    /** @var ObjectRepository */
+    private $userRepository;
 
-    function __construct(\Kdyby\Doctrine\EntityDao $userDao, \Nette\Http\Session $sessionHandler)
+    /** @var IIdentity */
+    private $identity = NULL;
+
+    function __construct(ObjectRepository $userRepository, Session $sessionHandler)
     {
         parent::__construct($sessionHandler);
-        $this->userDao = $userDao;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @param \Nette\Security\IIdentity
      * @return UserStorage
      */
-    public function setIdentity(\Nette\Security\IIdentity $identity = NULL)
+    public function setIdentity(IIdentity $identity = NULL)
     {
-        $this->identity = $identity;
         if ($identity instanceof User) {
-            $identity = new \Nette\Security\Identity($identity->getId());
+            $identity = new Identity($identity->getId());
         }
+        $this->identity = $identity;
         return parent::setIdentity($identity);
     }
 
     /**
-     * @return \Nette\Security\IIdentity|NULL
+     * @return IIdentity|NULL
      */
     public function getIdentity()
     {
@@ -40,6 +47,10 @@ class UserStorage extends \Nette\Http\UserStorage
             return NULL;
         }
 
-        return $this->userDao->find($identity->getId());
+        if ($this->identity !== NULL && $identity->getId() === $this->identity->getId()) {
+            return $this->identity;
+        } else {
+            return $this->userRepository->find($identity->getId());
+        }
     }
 }

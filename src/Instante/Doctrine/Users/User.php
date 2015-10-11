@@ -2,9 +2,10 @@
 namespace Instante\Doctrine\Users;
 
 use Doctrine\ORM\Mapping as ORM;
+use Nette\Security\IIdentity;
 
 /** @ORM\MappedSuperclass */
-abstract class User extends \Nette\Object implements \Nette\Security\IIdentity
+abstract class User implements IIdentity
 {
     /**
      * @ORM\Column(type="integer")
@@ -12,40 +13,35 @@ abstract class User extends \Nette\Object implements \Nette\Security\IIdentity
      * @ORM\GeneratedValue
      * @var int
      */
-    protected $id;
+    private $id;
 
     /**
-     * @ORM\Column(type="string",length=50,unique=true)
+     * @ORM\Column(type="string",length=50)
      * @var string
      */
-    protected $name;
+    private $salt;
 
     /**
      * @ORM\Column(type="string",length=60,nullable=true)
      * @var string
      */
-    protected $password;
+    private $password;
 
     /**
      * @ORM\Column(type="boolean")
      * @var string
      */
-    protected $active = 1;
+    private $active = 1;
 
-    public function __construct($name, $password)
+    public function __construct($salt, $password)
     {
-        $this->name = $name;
+        $this->salt = $salt;
         $this->password = $this->hashPassword($password);
     }
 
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getName()
-    {
-        return $this->name;
     }
 
     public function getPassword()
@@ -59,21 +55,15 @@ abstract class User extends \Nette\Object implements \Nette\Security\IIdentity
     }
 
     /**
-     * Password is salted by name - you cannot change only user name without re-entering password
-     *
-     * @param string $name
      * @param string $password
+     * @param string $salt - can be optionally changed
      * @return self fluent
      */
-    public function setNameAndPassword($name, $password)
+    public function setPassword($password, $salt = NULL)
     {
-        $this->name = $name;
-        $this->setPassword($password);
-        return $this;
-    }
-
-    public function setPassword($password)
-    {
+        if ($salt !== NULL) {
+            $this->salt = $salt;
+        }
         $this->password = $this->hashPassword($password);
         return $this;
     }
@@ -89,14 +79,14 @@ abstract class User extends \Nette\Object implements \Nette\Security\IIdentity
         return password_verify($this->saltPassword($password), $this->password);
     }
 
-    protected function hashPassword($password)
+    private function hashPassword($password)
     {
         return password_hash($this->saltPassword($password), PASSWORD_BCRYPT);
     }
 
     private function saltPassword($password)
     {
-        return $password . $this->name;
+        return $password . $this->salt;
     }
 
     public function getRoles()

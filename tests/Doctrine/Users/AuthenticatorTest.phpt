@@ -9,6 +9,7 @@ use Tester\Assert;
 use Tester\TestCase;
 use Nette\Security\AuthenticationException;
 require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/mocks.php';
 
 class AuthenticatorTest extends TestCase
 {
@@ -32,34 +33,6 @@ class AuthenticatorTest extends TestCase
                 'pwd',
             ]); }, 'Nette\Security\AuthenticationException', NULL, Authenticator::NOT_APPROVED);
     }
-}
-
-class MockUser extends User
-{
-}
-
-class MockUserRepository implements ObjectRepository
-{
-    public function find($id) { }
-
-    public function findAll() { }
-
-    public function findBy(array $criteria, array $orderBy = NULL, $limit = NULL, $offset = NULL) { }
-
-    public function findOneBy(array $criteria)
-    {
-        $mu = new MockUser('user', 'pwd');
-        switch ($criteria['name']) {
-            case 'inact':
-                $mu->setActive(FALSE);
-            case 'user': //intentional fallthru
-                return $mu;
-            default:
-                return NULL;
-        }
-    }
-
-    public function getClassName() { }
 }
 
 run(new AuthenticatorTest);
