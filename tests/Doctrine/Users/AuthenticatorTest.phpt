@@ -1,6 +1,6 @@
 <?php
 
-namespace InstanteTests\Doctrine\Users;
+namespace Instante\Tests\Doctrine\Users;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Instante\Doctrine\Users\Authenticator;
@@ -15,7 +15,7 @@ class AuthenticatorTest extends TestCase
     public function testAuthenticate()
     {
         $a = new Authenticator(new MockUserRepository);
-        Assert::type('InstanteTests\Doctrine\Users\MockUser', $a->authenticate(['user', 'pwd']));
+        Assert::type('Instante\Tests\Doctrine\Users\MockUser', $a->authenticate(['user', 'pwd']));
         Assert::throws(function () use ($a) {
             $a->authenticate([
                 'user',
