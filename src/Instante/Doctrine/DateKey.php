@@ -9,12 +9,15 @@ namespace Instante\Doctrine;
  *
  * @author Richard Ejem <richard@ejem.cz>
  */
-class DateKey extends \DateTime{
-    function __toString() {
+class DateKey extends \DateTime
+{
+    function __toString()
+    {
         return $this->format('c');
     }
 
-    static function fromDateTime(\DateTime $dateTime) {
+    static function fromDateTime(\DateTime $dateTime)
+    {
         return new static($dateTime->format('c'));
     }
 }
