@@ -1,2 +1,0 @@
-# customize path to php.ini (X:/www-server/PHP/ in this example)
-"../vendor/bin/tester.bat" -c "X:/www-server/PHP/" "."
