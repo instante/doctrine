@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 require_once __DIR__ . '/mocks.php';
 
 $u = new MockUser('u', 'p');
-Assert::same(1, $u->isActive());
+Assert::same(TRUE, $u->isActive());
 Assert::false($u->checkPassword('f'));
 Assert::true($u->checkPassword('p'));
 $u->setPassword('new');
