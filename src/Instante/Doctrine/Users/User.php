@@ -29,9 +29,9 @@ abstract class User implements IIdentity
 
     /**
      * @ORM\Column(type="boolean")
-     * @var string
+     * @var bool
      */
-    private $active = 1;
+    private $active = TRUE;
 
     public function __construct($salt, $password)
     {
@@ -70,7 +70,7 @@ abstract class User implements IIdentity
 
     public function setActive($active)
     {
-        $this->active = $active;
+        $this->active = (bool)$active;
         return $this;
     }
 
