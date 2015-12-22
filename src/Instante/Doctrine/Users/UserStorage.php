@@ -1,8 +1,10 @@
 <?php
 
 namespace Instante\Doctrine\Users;
+
 use Doctrine\Common\Persistence\ObjectRepository;
 use Nette\Http\Session;
+use Nette\InvalidArgumentException;
 use Nette\Security\Identity;
 use Nette\Security\IIdentity;
 
@@ -12,16 +14,17 @@ use Nette\Security\IIdentity;
  */
 class UserStorage extends \Nette\Http\UserStorage
 {
-    /** @var ObjectRepository */
-    private $userRepository;
-
     /** @var IIdentity */
     private $identity = NULL;
 
     function __construct(ObjectRepository $userRepository, Session $sessionHandler)
     {
         parent::__construct($sessionHandler);
-        $this->userRepository = $userRepository;
+        $identity = parent::getIdentity();
+        if ($identity !== NULL) {
+            $identity = $userRepository->find($identity->getId());
+        }
+        $this->identity = $identity;
     }
 
     /**
@@ -30,27 +33,16 @@ class UserStorage extends \Nette\Http\UserStorage
      */
     public function setIdentity(IIdentity $identity = NULL)
     {
-        if ($identity instanceof User) {
-            $identity = new Identity($identity->getId());
+        if (!($identity instanceof User || $identity === NULL)) {
+            throw new InvalidArgumentException(__CLASS__ . '::' . __METHOD__ . ' needs instance of ' . User::class . ', got ' . get_class($identity));
         }
         $this->identity = $identity;
-        return parent::setIdentity($identity);
+        return parent::setIdentity($identity === NULL ? NULL : new Identity($identity->getId()));
     }
 
-    /**
-     * @return IIdentity|NULL
-     */
+    /** @return IIdentity|NULL */
     public function getIdentity()
     {
-        $identity = parent::getIdentity();
-        if (!$identity) {
-            return NULL;
-        }
-
-        if ($this->identity !== NULL && $identity->getId() === $this->identity->getId()) {
-            return $this->identity;
-        } else {
-            return $this->userRepository->find($identity->getId());
-        }
+        return $this->identity;
     }
 }
