@@ -8,7 +8,8 @@ for your use.
 New BSD License
 ---------------
 
-Copyright (c) 2015 Mistylab
+Copyright (c) 2015 Proof & Reason, s.r.o.
+
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
