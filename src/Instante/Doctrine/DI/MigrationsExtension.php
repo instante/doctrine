@@ -35,7 +35,7 @@ class MigrationsExtension extends CompilerExtension
     public function getDefaults()
     {
         return array(
-            'name' => $this->defaultName ?: \Nette\Framework::NAME . ' DB Migrations',
+            'name' => $this->defaultName ?: 'Integration of Doctrine migrations into Nette',
             'connection' => '@doctrine.default.connection',
             'table' => 'db_version',
             'directory' => '%appDir%/migrations',
