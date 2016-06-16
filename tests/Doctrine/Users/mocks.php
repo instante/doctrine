@@ -354,12 +354,21 @@ class MockSessionHandler implements SessionHandlerInterface
     }
 }
 
+class MockSession extends Session
+{
+    public function regenerateId()
+    {
+        //suppress call to avoid PHP7 error
+    }
+
+}
+
 class MockSessionFactory
 {
     static function create($data = NULL)
     {
         session_save_path('.');
-        $session = new Session(new MockSessionRequest, new MockSessionResponse);
+        $session = new MockSession(new MockSessionRequest, new MockSessionResponse);
         $session->setHandler(new MockSessionHandler($data));
         $session->setName('test-session-id');
         $session->start();
