@@ -7,10 +7,9 @@ use Nette\Http\FileUpload;
 use Nette\Http\IRequest;
 use Nette\Http\IResponse;
 use Nette\Http\Session;
-use Nette\Http\URL;
+use Nette\Http\Url;
 use Nette\Http\UrlScript;
 use Nette\NotImplementedException;
-use Nette\Security\IUserStorage;
 use Nette\UnexpectedValueException;
 use SessionHandlerInterface;
 
@@ -322,7 +321,8 @@ class MockSessionHandler implements SessionHandlerInterface
     }
 
 
-    public function close() {
+    public function close()
+    {
         return TRUE;
     }
 
@@ -332,11 +332,13 @@ class MockSessionHandler implements SessionHandlerInterface
         return TRUE;
     }
 
-    public function gc($maxlifetime) {
+    public function gc($maxlifetime)
+    {
         return TRUE;
     }
 
-    public function open($save_path, $session_id) {
+    public function open($save_path, $session_id)
+    {
         return TRUE;
     }
 
@@ -372,6 +374,7 @@ class MockUser extends User
 class MockUserRepository implements ObjectRepository
 {
     public $users = [];
+
     public function find($id)
     {
         return isset($this->users[$id]) ? $this->users[$id] : NULL;
