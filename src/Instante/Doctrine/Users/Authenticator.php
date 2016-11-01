@@ -18,9 +18,13 @@ class Authenticator extends Object implements IAuthenticator
     /** @var ObjectRepository */
     private $userRepository;
 
-    function __construct(ObjectRepository $userRepository)
+    /** @var string */
+    private $nameColumn;
+
+    function __construct(ObjectRepository $userRepository, $nameColumn = 'name')
     {
         $this->userRepository = $userRepository;
+        $this->nameColumn = $nameColumn;
     }
 
     /**
@@ -33,7 +37,7 @@ class Authenticator extends Object implements IAuthenticator
     {
         list($username, $password) = $credentials;
 
-        $user = $this->userRepository->findOneBy(['name' => $username]);
+        $user = $this->userRepository->findOneBy([$this->nameColumn => $username]);
 
         if ($user === NULL) {
             throw new AuthenticationException("User '$username' not found.", self::IDENTITY_NOT_FOUND);

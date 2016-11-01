@@ -402,13 +402,18 @@ class MockUserRepository implements ObjectRepository
     public function findOneBy(array $criteria)
     {
         $mu = new MockUser('user', 'pwd');
-        switch ($criteria['name']) {
-            case 'inact':
-                $mu->setActive(FALSE);
-            case 'user': //intentional fallthru
-                return $mu;
-            default:
-                return NULL;
+        if (isset($criteria['email']) && $criteria['email'] === 'john.doe@example.com') {
+            return $mu;
+        }
+        if (isset($criteria['name'])) {
+            switch ($criteria['name']) {
+                case 'inact':
+                    $mu->setActive(FALSE);
+                case 'user': //intentional fallthru
+                    return $mu;
+                default:
+                    return NULL;
+            }
         }
     }
 
