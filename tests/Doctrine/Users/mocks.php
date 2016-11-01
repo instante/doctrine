@@ -380,7 +380,7 @@ class MockUser extends User
 {
 }
 
-class MockUserRepository implements ObjectRepository
+class FakeUserRepository implements ObjectRepository
 {
     public $users = [];
 

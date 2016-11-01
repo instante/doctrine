@@ -9,7 +9,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 require_once __DIR__ . '/mocks.php';
 
-$a = new Authenticator(new MockUserRepository);
+$a = new Authenticator(new FakeUserRepository);
 Assert::type(MockUser::class, $a->authenticate(['user', 'pwd']));
 Assert::throws(function () use ($a) {
     $a->authenticate([

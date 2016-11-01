@@ -15,7 +15,7 @@ if (PHP_VERSION_ID === 70000) {
     Environment::skip('session mocking is broken on PHP 7.0.0 due to bug #70520');
 }
 
-$mockUserRepository = new MockUserRepository;
+$mockUserRepository = new FakeUserRepository;
 $sess = MockSessionFactory::create();
 $mockUserRepository->users[10] = new MockUser('u', 'pwd');
 $userSess = $sess->getSection('Nette.Http.UserStorage/');
