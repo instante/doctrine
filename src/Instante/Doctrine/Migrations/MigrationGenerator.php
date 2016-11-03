@@ -17,7 +17,6 @@ class MigrationGenerator
     private $migrationFilesMask;
 
     /**
-     * MigrationGenerator constructor.
      * @param EntityManager $em
      * @param string $migrationsDir
      * @param string $migrationFilesMask
