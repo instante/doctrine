@@ -3,6 +3,7 @@
 namespace Instante\Tests\Doctrine\Migrations;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\DBAL\Configuration as DbalConfiguration;
 use Doctrine\ORM\Configuration as OrmConfiguration;
 use Doctrine\DBAL\DriverManager;
@@ -10,6 +11,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
+
+//workaround to autoload annotation classes without registry mapping configuration
+AnnotationRegistry::registerLoader(function($className) {return class_exists($className); } );
 
 function createTestEntityManager($modelDir = 'default', $sqlFile = NULL) {
     $config = new OrmConfiguration();
