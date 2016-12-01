@@ -12,7 +12,8 @@ use Doctrine\ORM\Mapping\DefaultQuoteStrategy;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Mapping\UnderscoreNamingStrategy;
 
-//workaround to autoload annotation classes without registry mapping configuration
+// workaround to autoload annotation classes using common PHPregisterd class loaders
+// without registry mapping configuration
 AnnotationRegistry::registerLoader(function($className) {return class_exists($className); } );
 
 function createTestEntityManager($modelDir = 'default', $sqlFile = NULL) {
