@@ -14,18 +14,19 @@ class MigrationGenerator
     private $migrationsDir;
 
     /** @var string * for version number */
-    private $migrationFilesMask;
+    private $migrationFilesMask = 'Version*.php';
+
+    /** @var string */
+    private $schemaFile = 'schema.php';
 
     /**
      * @param EntityManager $em
      * @param string $migrationsDir
-     * @param string $migrationFilesMask
      */
-    public function __construct(EntityManager $em, $migrationsDir, $migrationFilesMask = 'Version*.php')
+    public function __construct(EntityManager $em, $migrationsDir)
     {
         $this->em = $em;
         $this->migrationsDir = $migrationsDir;
-        $this->migrationFilesMask = $migrationFilesMask;
     }
 
 
