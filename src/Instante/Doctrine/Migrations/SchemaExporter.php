@@ -14,14 +14,15 @@ class SchemaExporter
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-return (function() use (\$namingStrategy) {
+\$createMigration = function() use (\$namingStrategy) {
     \$_classes_ = [];
 
 EOT;
 
     private static $epilogue = <<<EOT
     return \$_classes_;
-})();
+};
+return \$createMigration();
 
 EOT;
 
