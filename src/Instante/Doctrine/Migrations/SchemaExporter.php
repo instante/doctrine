@@ -6,6 +6,9 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Tools\Export\Driver\PhpExporter;
 
+/**
+ * @internal to be used by SchemaFileMigrationStragegy
+ */
 class SchemaExporter
 {
     private static $prologue = <<<EOT
@@ -33,12 +36,12 @@ class SchemaExporter
  *    h. Finish current commit by continuing the rebase ("git rebase --continue")
  */
 
-namespace Instante\Doctrine;
+namespace Instante\Doctrine\Migrations;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-\$createMigration = function() use (\$namingStrategy) {
+\$createMetadataList = function() use (\$namingStrategy) {
     \$_classes_ = [];
 
 EOT;
@@ -46,7 +49,7 @@ EOT;
     private static $epilogue = <<<EOT
     return \$_classes_;
 };
-return \$createMigration();
+return new FileSchema(\$createMetadataList(), %s);
 
 EOT;
 
@@ -63,39 +66,45 @@ EOT;
 
     /**
      * @param EntityManager $em
+     * @param array $versionChain
      * @return string php code
      */
-    public function export(EntityManager $em)
+    static public function export(EntityManager $em, array $versionChain)
     {
-        $exporter = $this->createExporter();
+        $exporter = SchemaExporter::createExporter();
         $output = sprintf(self::$prologue, uniqid());
         foreach ($em->getMetadataFactory()->getAllMetadata() as $metadata) {
             /** @var ClassMetadata $metadata */
-            $output .= $this->processSingleExport($exporter->exportClassMetadata($metadata), $metadata->getName());
+            $output .= SchemaExporter::processSingleExport($exporter->exportClassMetadata($metadata), $metadata->getName());
         }
-        $output .= self::$epilogue;
+        $output .= sprintf(self::$epilogue, var_export($versionChain, true));
         return $output;
     }
 
-    /** @return PhpExporter */
-    private function createExporter()
+    /**
+     * @return PhpExporter
+     */
+    static private function createExporter()
     {
         $exporter = new PhpExporter();
         $exporter->setOverwriteExistingFiles(true);
         return $exporter;
     }
 
-    private function processSingleExport($metadataPhpCode, $entityClassName)
+    static private function processSingleExport($metadataPhpCode, $entityClassName)
     {
         $lines = array_slice(explode("\n", $metadataPhpCode), 4);
         return
-            str_replace('<class>', $this->phpEscapeString($entityClassName), self::$prependToClassDef)
-            . implode("\n", array_map(function($str) { return '    ' . $str; }, $lines))
+            str_replace('<class>', SchemaExporter::phpEscapeString($entityClassName), self::$prependToClassDef)
+            . implode("\n", array_map(function ($str) {
+                return '    ' . $str;
+            }, $lines))
             . "\n"
             . self::$appendToClassDef;
     }
 
-    private function phpEscapeString($str) {
+    static private function phpEscapeString($str)
+    {
         $str = str_replace(['\'', '\\'], ['\\\'', '\\\\'], $str);
         return "'$str'";
     }
