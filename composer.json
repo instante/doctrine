@@ -22,7 +22,11 @@
     "require-dev": {
         "nette/tester": "@dev",
         "nette/http": "~2.2",
-        "jakub-onderka/php-parallel-lint": "~0.6"
+        "jakub-onderka/php-parallel-lint": "~0.6",
+        "doctrine/data-fixtures": "~1.2"
+    },
+    "suggest": {
+        "doctrine/data-fixtures": "to use Doctrine Data Fixtures API"
     },
     "autoload": {
         "psr-0": {
