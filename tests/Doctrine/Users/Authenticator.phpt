@@ -3,6 +3,7 @@
 namespace Instante\Tests\Doctrine\Users;
 
 use Instante\Doctrine\Users\Authenticator;
+use Instante\Doctrine\Users\User;
 use Nette\Security\AuthenticationException;
 use Tester\Assert;
 
@@ -10,7 +11,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 require_once __DIR__ . '/mocks.php';
 
 $a = new Authenticator(new FakeUserRepository);
-Assert::type(MockUser::class, $a->authenticate(['user', 'pwd']));
+Assert::type(User::class, $a->authenticate(['user', 'pwd']));
 Assert::throws(function () use ($a) {
     $a->authenticate([
         'user',

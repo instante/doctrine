@@ -17,7 +17,7 @@ if (PHP_VERSION_ID === 70000) {
 
 $mockUserRepository = new FakeUserRepository;
 $sess = MockSessionFactory::create();
-$mockUserRepository->users[10] = new MockUser('u', 'pwd');
+$mockUserRepository->users[10] = createFakeUser('u', 'pwd');
 $userSess = $sess->getSection('Nette.Http.UserStorage/');
 $userSess->identity = new Identity(10);
 $userSess->authenticated = TRUE;
@@ -28,7 +28,7 @@ $userStorage = new UserStorage($mockUserRepository, $sess);
 
 Assert::true($userStorage->getIdentity()->checkPassword('pwd'));
 
-$u = new MockUser('user', 'pass');
+$u = createFakeUser('user', 'pass');
 $refl = new \ReflectionClass(User::class);
 $idProp = $refl->getProperty('id');
 $idProp->setAccessible(TRUE);

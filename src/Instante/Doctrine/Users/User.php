@@ -88,9 +88,4 @@ abstract class User implements IIdentity
     {
         return $password . $this->salt;
     }
-
-    public function getRoles()
-    {
-        return array();
-    }
 }

@@ -7,7 +7,7 @@ use Tester\Assert;
 require_once __DIR__ . '/../../bootstrap.php';
 require_once __DIR__ . '/mocks.php';
 
-$u = new MockUser('u', 'p');
+$u = createFakeUser('u', 'p');
 Assert::same(TRUE, $u->isActive());
 Assert::false($u->checkPassword('f'));
 Assert::true($u->checkPassword('p'));

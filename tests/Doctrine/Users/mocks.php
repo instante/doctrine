@@ -13,6 +13,13 @@ use Nette\NotImplementedException;
 use Nette\UnexpectedValueException;
 use SessionHandlerInterface;
 
+function createFakeUser($salt, $password)
+{
+    $fakeUser = spy(User::class . '[getRoles]', [$salt, $password]);
+    $fakeUser->shouldReceive('getRoles')->andReturn([]);
+    return $fakeUser;
+}
+
 class MockSessionRequest implements IRequest
 {
 
@@ -376,10 +383,6 @@ class MockSessionFactory
     }
 }
 
-class MockUser extends User
-{
-}
-
 class FakeUserRepository implements ObjectRepository
 {
     public $users = [];
@@ -401,7 +404,7 @@ class FakeUserRepository implements ObjectRepository
 
     public function findOneBy(array $criteria)
     {
-        $mu = new MockUser('user', 'pwd');
+        $mu = createFakeUser('user', 'pwd');
         if (isset($criteria['email']) && $criteria['email'] === 'john.doe@example.com') {
             return $mu;
         }

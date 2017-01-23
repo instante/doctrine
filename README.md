@@ -13,7 +13,7 @@ Wrapper over Kdyby\Doctrine adding several improvements:
 Requirements
 ------------
 
-- PHP 5.5 or higher
+- PHP 5.6 or higher
 
 - [Nette Framework](https://github.com/nette/nette) 2.2
 
