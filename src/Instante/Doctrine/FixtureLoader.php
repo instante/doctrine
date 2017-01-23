@@ -27,9 +27,10 @@ class FixtureLoader
     }
 
     public function executeFixtures($append = false, callable $logger = null) {
-        $purger = new ORMPurger($this->em);
+        $purger = new TruncateORMPurger($this->em);
         $purger->setPurgeMode(ORMPurger::PURGE_MODE_TRUNCATE);
         $executor = new ORMExecutor($this->em, $purger);
+        $executor->setPurger($purger);
         if ($logger !== null) {
             $executor->setLogger($logger);
         }
